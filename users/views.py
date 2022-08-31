@@ -46,7 +46,7 @@ class AuthUserListView(APIView):
   """
   List view
 
-   _('text') for I18N
+  @:parameter Header with JWT access token
   """
   serializer_class = AuthUserListSerializer
   permission_classes = (IsAuthenticated,)
@@ -57,7 +57,7 @@ class AuthUserListView(APIView):
       response = {
         'success': False,
         'status_code': status.HTTP_403_FORBIDDEN,
-        'message': 'You are not authorized to perform this action'
+        'message': _('You are not authorized to perform this action')
       }
       return Response(response, status.HTTP_403_FORBIDDEN)
     else:
@@ -77,7 +77,8 @@ class AuthUserLoginView(APIView):
   """
   Login view
 
-   _('text') for I18N
+  @:parameter email
+  @:parameter password
   """
   serializer_class = AuthUserLoginSerializer
   permission_classes = (AllowAny,)
