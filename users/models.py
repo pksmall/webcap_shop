@@ -4,6 +4,7 @@ from django.db import models
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
 
 from users.manager import CustomUserManager
 
@@ -21,10 +22,10 @@ class User(AbstractBaseUser, PermissionsMixin):
   ACCOUNTANT = 4
 
   ROLE_CHOICES = (
-    (ADMIN, 'Admin'),
-    (SELLER, 'Seller manager'),
-    (CASHIER, 'Cashier'),
-    (ACCOUNTANT, 'Accountant')
+    (ADMIN, _('Admin')),
+    (SELLER, _('Seller manager')),
+    (CASHIER, _('Cashier')),
+    (ACCOUNTANT, _('Accountant'))
   )
 
   uid = models.UUIDField(unique=True, editable=False, default=uuid.uuid4, verbose_name='Public identifier')
