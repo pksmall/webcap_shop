@@ -1,0 +1,118 @@
+### User register
+#Success
+#{
+#  "success": true,
+#  "statusCode": 201,
+#  "message": "User successfully registered!",
+#  "user": {
+#    "email": "aaa@aa.cc",
+#    "password": "pbkdf2_sha256$390000$3Tf5SWuELSOBhLUo4fLrjL$O1j7O/vyIhrJ8JOAoWIU/Pcq2tamdarZkMbxoDyspdk="
+#  }
+#}
+#
+#Failed
+#{
+#  "email": [
+#    "user with this email already exists."
+#  ]
+#}
+POST http://localhost:8000/user/auth/register
+Content-Type: application/json
+
+{
+  "email": "aaa@aa.cc",
+  "password": "password123"
+}
+
+### User login
+#Success
+#{
+#  "success": true,
+#  "statusCode": 200,
+#  "message": "User logged in successfully",
+#  "access": "eyJ0eXAiOiJKV1QiLCJ..",
+#  "refresh": "eyJ0eXAiOiJKV1QiLC..",
+#  "authenticatedUser": {
+#    "email": "aaa@aa.cc",
+#    "role": "2"
+#  }
+#}
+#
+#Failed
+#{
+#  "non_field_errors": [
+#    "Invalid login credentials"
+#  ]
+#}
+POST http://localhost:8000/user/auth/login
+Content-Type: application/json
+
+{
+  "email": "aaa@aa.cc",
+  "password": "passw3ord123"
+}
+
+> {%
+  client.global.set("access_token", response.body.access);
+  client.global.set("refresh_token", response.body.refresh);
+%}
+
+
+### Get UserList
+#Success
+# {
+#  "success": true,
+#  "status_code": 200,
+#  "message": "Successfully fetched users",
+#  "users": [
+#    {
+#      "email": "aaa@aa.cc",
+#      "role": 2
+#    },
+#    {
+#      "email": "a@a.com",
+#      "role": 1
+#    }
+#  ]
+#}
+#
+#Failed
+# {
+#  "success": false,
+#  "status_code": 403,
+#  "message": "You are not authorized to perform this action"
+#}
+#Failed No JWT Header
+#{
+#  "detail": "Authentication credentials were not provided."
+#}
+GET http://localhost:8000/user/auth/users
+Authorization: JWT {{access_token}}
+Content-Type: application/json
+
+{}
+
+
+### Refresh token
+#Success
+#{
+#  "access": "eyJ0eX..",
+#  "refresh": "eyJ0eX.."
+#}
+#
+#Failed
+#{
+#  "detail": "Token is invalid or expired",
+#  "code": "token_not_valid"
+#}
+POST http://localhost:8000/user/auth/token/refresh/
+Content-Type: application/json
+
+{
+  "refresh": "{{refresh_token}}"
+}
+
+> {%
+  client.global.set("access_token", response.body.access);
+  client.global.set("refresh_token", response.body.refresh);
+%}
