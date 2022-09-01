@@ -1,14 +1,13 @@
 import json
-from django.test import TestCase
 from django.urls import path, include, reverse
 from rest_framework import status
-from rest_framework.test import APITestCase, APIClient, URLPatternsTestCase
+from rest_framework.test import APIClient, APITestCase, URLPatternsTestCase
 
 from users.models import User
 from .models import Product
 
 
-class TestProductsModel(TestCase):
+class TestProductsModel(APITestCase, URLPatternsTestCase):
   urlpatterns = [
     path('user/auth/', include('users.urls')),
     path('store/', include('store.urls'))
