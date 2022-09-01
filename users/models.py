@@ -20,39 +20,38 @@ class User(AbstractBaseUser, PermissionsMixin):
   SELLER = 2
   CASHIER = 3
   ACCOUNTANT = 4
+  STOREMASTER = 5
 
   ROLE_CHOICES = (
     (ADMIN, _('Admin')),
     (SELLER, _('Seller manager')),
     (CASHIER, _('Cashier')),
-    (ACCOUNTANT, _('Accountant'))
+    (ACCOUNTANT, _('Accountant')),
+    (STOREMASTER, _('Store Master'))
   )
 
   uid = models.UUIDField(unique=True, editable=False, default=uuid.uuid4, verbose_name='Public identifier')
   email = models.EmailField(unique=True)
   first_name = models.CharField(max_length=30, blank=True)
   last_name = models.CharField(max_length=50, blank=True)
-  # default role SELLER
-  role = models.PositiveSmallIntegerField(choices=ROLE_CHOICES, blank=True, null=True, default=2)
+  role = models.PositiveSmallIntegerField(choices=ROLE_CHOICES, blank=True, null=True, default=SELLER)
   date_joined = models.DateTimeField(auto_now_add=True)
   is_active = models.BooleanField(default=True)
   is_deleted = models.BooleanField(default=False)
   created_date = models.DateTimeField(default=timezone.now)
   modified_date = models.DateTimeField(default=timezone.now)
-  created_by = models.EmailField()
-  modified_by = models.EmailField()
 
   USERNAME_FIELD = 'email'
   REQUIRED_FIELDS = []
 
   objects = CustomUserManager()
 
-  # check if admin
+  # django admin requered fields hooks
   @property
   def is_admin(self):
     return self.role == 1
 
-  # check if staff
+  # django admin requered fields hooks
   @property
   def is_staff(self):
     return self.role == 1

@@ -1,0 +1,93 @@
+### Login StoreMaster
+POST http://localhost:8000/user/auth/login
+Content-Type: application/json
+
+{
+  "email": "ada@aa.cc",
+  "password": "password123"
+}
+
+> {%
+  client.global.set("access_token", response.body.access);
+  client.global.set("refresh_token", response.body.refresh);
+%}
+
+### Product create
+#Success, Status: 201
+#{
+#  "success": true,
+#  "statusCode": 201,
+#  "message": "Product successfully created!",
+#  "product": {
+#    "title": "product #1",
+#    "regular_price": "11.11",
+#    "discount_price": "0.00",
+#    "slug": "",
+#    "description": "",
+#    "is_active": true,
+#    "who_created": 10
+#  }
+#}
+POST http://localhost:8000/store/product/create/
+Authorization: JWT {{access_token}}
+Content-Type: application/json
+
+{
+  "title": "product #2",
+  "regular_price": 11.11
+}
+
+### Get List of Product
+#Success, Status: 200
+#{
+#  "success": true,
+#  "status_code": 200,
+#  "message": "Successfully fetched products",
+#  "products": [
+#    {
+#      "id": 5,
+#      "title": "product #1",
+#      "regular_price": "11.11",
+#      "discount_price": "0.00",
+#      "created_at": "2022-09-01T11:32:25.097165Z",
+#      "updated_at": "2022-09-01T11:32:25.097192Z"
+#    },
+#    {
+#      "id": 4,
+#      "title": "Iphone 1",
+#      "regular_price": "11.11",
+#      "discount_price": "11.11",
+#      "created_at": "2022-09-01T11:32:25.097165Z",
+#      "updated_at": "2022-09-01T11:32:25.097192Z"
+#    }
+#  ]
+#}
+GET http://localhost:8000/store/product/list/
+Authorization: JWT {{access_token}}
+Content-Type: application/json
+
+### Get Product By ID
+#Success, Status: 200
+#{
+#  "success": true,
+#  "status_code": 200,
+#  "message": "Successfully fetched products",
+#  "product": {
+#    "id": 4,
+#    "title": "Iphone 1",
+#    "regular_price": "11.11",
+#    "discount_price": "11.11",
+#    "created_at": "2022-09-01T11:32:25.097165Z",
+#    "updated_at": "2022-09-01T11:32:25.097192Z"
+#  }
+#}
+#
+#Failed, Status: 400,403,404
+#{
+#  "success": false,
+#  "status_code": 400,
+#  "message": "Product not found"
+#}
+GET http://localhost:8000/store/product/get/5
+Authorization: JWT {{access_token}}
+Content-Type: application/json

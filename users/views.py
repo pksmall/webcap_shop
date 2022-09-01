@@ -19,6 +19,9 @@ class AuthUserRegistrationView(APIView):
 
   @:parameter email
   @:parameter password
+  @:parameter role (optional)
+  @:parameter first_name (optional)
+  @:parameter last_name (optional)
   """
   serializer_class = AuthUserRegistrationSerializer
   permission_classes = (AllowAny, )
@@ -52,7 +55,7 @@ class AuthUserListView(APIView):
 
   def get(self, request):
     user = request.user
-    if user.role != 1:
+    if user.role != User.ADMIN:
       response = {
         'success': False,
         'status_code': status.HTTP_403_FORBIDDEN,

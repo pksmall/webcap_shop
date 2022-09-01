@@ -16,7 +16,10 @@ class AuthUserRegistrationSerializer(serializers.ModelSerializer):
     model = User
     fields = (
       'email',
-      'password'
+      'password',
+      'role',
+      'first_name',
+      'last_name'
     )
 
   def create(self, validated_data):

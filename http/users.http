@@ -1,5 +1,5 @@
 ### User register
-#Success
+#Success, Status: 201
 #{
 #  "success": true,
 #  "statusCode": 201,
@@ -10,7 +10,7 @@
 #  }
 #}
 #
-#Failed
+#Failed, Status: 400
 #{
 #  "email": [
 #    "user with this email already exists."
@@ -20,12 +20,13 @@ POST http://localhost:8000/user/auth/register
 Content-Type: application/json
 
 {
-  "email": "aaa@aa.cc",
-  "password": "password123"
+  "email": "ada@aa.cc",
+  "password": "password123",
+  "role": 5
 }
 
 ### User login
-#Success
+#Success, Status: 200
 #{
 #  "success": true,
 #  "statusCode": 200,
@@ -38,7 +39,7 @@ Content-Type: application/json
 #  }
 #}
 #
-#Failed
+#Failed, Status: 400
 #{
 #  "non_field_errors": [
 #    "Invalid login credentials"
@@ -48,8 +49,8 @@ POST http://localhost:8000/user/auth/login
 Content-Type: application/json
 
 {
-  "email": "aaa@aa.cc",
-  "password": "passw3ord123"
+  "email": "ada@aa.cc",
+  "password": "password123"
 }
 
 > {%
@@ -59,7 +60,7 @@ Content-Type: application/json
 
 
 ### Get UserList
-#Success
+#Success, Status: 200
 # {
 #  "success": true,
 #  "status_code": 200,
@@ -76,7 +77,7 @@ Content-Type: application/json
 #  ]
 #}
 #
-#Failed
+#Failed, Status: 403,401
 # {
 #  "success": false,
 #  "status_code": 403,
