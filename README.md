@@ -49,6 +49,10 @@ python manage.py test
 
 # Продакшен или тест сервер через Docker
 
+Скопируйте `.env.example` в `.env`. Отредактируйте на нужные вам параметры
+
+Скопируйте `webcap_shop/local-exeample.py` в `webcap_shop/local.py`. Отредактируете с соотвествии вашему `.env` файлу.
+
 Запуск проекта:
 ```bash
 docker-compose up -d
