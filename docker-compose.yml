@@ -21,7 +21,6 @@ services:
     command: >
       bash -c "python manage.py migrate --noinput
       && python manage.py collectstatic --clear --noinput
-      && python manage.py create_extension
       && gunicorn --access-logfile - --workers 4 --timeout 600 --reload --bind web:8000 webcap_shop.wsgi:application"
     env_file: .env
     ports:
