@@ -20,7 +20,7 @@ POST http://localhost:8000/user/auth/register
 Content-Type: application/json
 
 {
-  "email": "ada@aa.cc",
+  "email": "g@g.cc",
   "password": "password123",
   "role": 5
 }

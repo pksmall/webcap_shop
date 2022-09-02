@@ -3,7 +3,7 @@ POST http://localhost:8000/user/auth/login
 Content-Type: application/json
 
 {
-  "email": "ada@aa.cc",
+  "email": "g@g.cc",
   "password": "password123"
 }
 
@@ -34,7 +34,7 @@ Content-Type: application/json
 
 {
   "title": "product #6",
-  "regular_price": 1.14,
+  "regular_price": 10,
   "is_active": false
 }
 
@@ -89,6 +89,6 @@ Content-Type: application/json
 #  "status_code": 400,
 #  "message": "Product not found"
 #}
-GET http://localhost:8000/store/product/get/8
+GET http://localhost:8000/store/product/get/1
 Authorization: JWT {{access_token}}
 Content-Type: application/json

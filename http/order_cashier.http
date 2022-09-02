@@ -3,7 +3,7 @@ POST http://localhost:8000/user/auth/login
 Content-Type: application/json
 
 {
-  "email": "cca@aa.cc",
+  "email": "c@c.cc",
   "password": "password123"
 }
 
@@ -43,7 +43,7 @@ Authorization: JWT {{access_token}}
 Content-Type: application/json
 
 {
-  "product_id": 8
+  "product_id": 5
 }
 
 ### Get List of Order with Bill
@@ -93,5 +93,5 @@ Authorization: JWT {{access_token}}
 Content-Type: application/json
 
 {
-  "order_id": 23
+  "order_id": 2
 }

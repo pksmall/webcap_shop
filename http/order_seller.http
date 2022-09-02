@@ -3,7 +3,7 @@ POST http://localhost:8000/user/auth/login
 Content-Type: application/json
 
 {
-  "email": "aaa@aa.cc",
+  "email": "b@b.cc",
   "password": "password123"
 }
 
@@ -60,7 +60,7 @@ Authorization: JWT {{access_token}}
 Content-Type: application/json
 
 {
-  "order_id": 20
+  "order_id": 3
 }
 
 ### Order Close
@@ -69,11 +69,11 @@ Authorization: JWT {{access_token}}
 Content-Type: application/json
 
 {
-  "order_id": 20
+  "order_id": 2
 }
 
 ### Order By Id
-GET http://localhost:8000/store/order/get/20
+GET http://localhost:8000/store/order/get/2
 Authorization: JWT {{access_token}}
 Content-Type: application/json
 
