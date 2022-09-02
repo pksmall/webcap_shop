@@ -117,3 +117,13 @@ Content-Type: application/json
   client.global.set("access_token", response.body.access);
   client.global.set("refresh_token", response.body.refresh);
 %}
+
+### docker user
+POST http://localhost:9595/user/auth/register
+Content-Type: application/json
+
+{
+  "email": "ada@aa.cc",
+  "password": "password123",
+  "role": 5
+}
