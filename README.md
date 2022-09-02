@@ -39,7 +39,7 @@ python manage.py runserver 8000
 
 Загрузите подготовленные данные для проекта:
 ```bash
-python manage.py loaddata
+python manage.py loaddata data_dump.json
 ```
 
 Запустите тесты:
@@ -56,6 +56,6 @@ docker-compose up -d
 
 Загрузка данных для проекта:
 ```bash
-docker-compose exec backend python manage.py loaddata
+docker-compose exec backend python manage.py loaddata data_dump.json
 ```
 

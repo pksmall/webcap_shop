@@ -1,4 +1,3 @@
-from datetime import datetime
 from rest_framework import serializers
 from django.utils.translation import gettext_lazy as _
 
@@ -50,69 +49,126 @@ class ProductGetSerializer(serializers.ModelSerializer):
     ]
 
 
+class BillCreateSerializer(serializers.ModelSerializer):
+  product = serializers.SerializerMethodField()
+  is_discount = serializers.SerializerMethodField()
+  discount_price = serializers.SerializerMethodField()
+
+  class Meta:
+    model = Bill
+    fields = ['order', 'product', 'price', 'quantity', 'is_discount', 'discount_price', 'created']
+
+  def get_product(self, instance):
+    return instance.product.title
+
+  def get_is_discount(self, instance):
+    return instance.product.discount_price > 0.00
+
+  def get_discount_price(self, instance):
+    return instance.product.discount_price
+
+
 class OrderCreateSerializer(serializers.ModelSerializer):
   """
   Order Create Serializer
   """
   class Meta:
     model = Order
+    fields = [
+      'id',
+      'order_key',
+      'total_paid',
+      'created_by',
+      'status',
+      'created'
+    ]
 
-  def create(self, validated_data):
-    product = Product.objects.filter(pk=validated_data['product_id']).get()
-    # @todo 30 days and 20% need to move into settings
-    """
-     check product created_at bigger than 30 days and calculate 20% discount 
-     check if discount price more than zero and the real price will be calculated   
-     if discount zero than calculate discount and save discount price 
-    """
-    price = 0.00
-    if product.created_at > 30:
-      if product.discount_price == 0.00:
-        product.discount_price = product.regular_price * 20/100
-        product.save()
-      price = product.regular_price - product.discount_price
-    order_key = datetime.strftime("%Y%m%d%H%I") + "-" + product.pk
-    order = Order.objects.create(order_key=order_key, total_paid=price)
-    Bill.objects.create(order=order, product=product, quantity=1)
-    return order
 
-  def validate(self, data):
-    if not data['product_id']:
-      try:
-        # check if product exists and active
-        Product.products.filter(pk=data['product_id']).get()
-      except Exception:
-        raise serializers.ValidationError(_("product not exists"))
-    return data
+class OrderPaidSerializer(serializers.ModelSerializer):
+  bill = serializers.SerializerMethodField()
+  status = serializers.SerializerMethodField()
+
+  class Meta:
+    model = Order
+    fields = [
+      'id',
+      'order_key',
+      'total_paid',
+      'created_by',
+      'status',
+      'created',
+      'bill'
+    ]
+
+  def get_status(self, instance):
+    res = ""
+    for idx, val in Order.STATUS_CHOICES:
+      if idx == instance.status:
+        res = val
+        break
+    return res
+
+  def get_bill(self, instance):
+    return BillCreateSerializer(Bill.objects.filter(order=instance.pk).get()).data
 
 
 class OrderListSerializer(serializers.ModelSerializer):
   """
   Order List Serializer
   """
+  bill = serializers.SerializerMethodField()
+  status = serializers.SerializerMethodField()
+
   class Meta:
     model = Order
+    fields = [
+      'id',
+      'order_key',
+      'total_paid',
+      'created_by',
+      'status',
+      'created',
+      'bill'
+    ]
 
+  def get_bill(self, instance):
+    return BillCreateSerializer(Bill.objects.filter(order=instance.pk).get()).data
 
-class OrderUpdateSerializer(serializers.ModelSerializer):
-  """
-  Order Update Serializer
-  """
-  class Meta:
-    model = Order
-
-
-class OrderCloseSerializer(serializers.ModelSerializer):
-  """
-  Order Close Serializer
-  """
-  class Meta:
-    model = Order
+  def get_status(self, instance):
+    res = ""
+    for idx, val in Order.STATUS_CHOICES:
+      if idx == instance.status:
+        res = val
+        break
+    return res
 
 
 class OrderGetSerializer(serializers.ModelSerializer):
   """
   Order Get by Id Serializer
   """
+  bill = serializers.SerializerMethodField()
+  status = serializers.SerializerMethodField()
+
   class Meta:
     model = Order
+    fields = [
+      'id',
+      'order_key',
+      'total_paid',
+      'created_by',
+      'status',
+      'created',
+      'bill'
+    ]
+
+  def get_bill(self, instance):
+    return BillCreateSerializer(Bill.objects.filter(order=instance.pk).get()).data
+
+  def get_status(self, instance):
+    res = ""
+    for idx, val in Order.STATUS_CHOICES:
+      if idx == instance.status:
+        res = val
+        break
+    return res

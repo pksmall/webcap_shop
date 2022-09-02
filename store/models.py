@@ -1,7 +1,8 @@
 from django.db import models
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
-from store.manager import ProductManager
+from store.manager import ProductManager, OrderManager
 from webcap_shop import settings
 from users.models import User
 
@@ -42,7 +43,7 @@ class Product(models.Model):
     help_text=_("Change product visibility"),
     default=True,
   )
-  created_at = models.DateTimeField(_("Created at"), auto_now_add=True, editable=False)
+  created_at = models.DateTimeField(_("Created at"), default=timezone.now)
   updated_at = models.DateTimeField(_("Updated at"), auto_now=True)
   who_created = models.ForeignKey(settings.AUTH_USER_MODEL,
                                   on_delete=models.CASCADE, related_name="user_product_created")
@@ -66,28 +67,30 @@ class Order(models.Model):
   """
   CREATED = 1
   PROCESSING = 2
-  PAYED = 3
+  PAID = 3
   DONE = 4
 
   STATUS_CHOICES = (
     (CREATED, _('Created')),
     (PROCESSING, _('Processing')),
-    (PAYED, _('Payed')),
+    (PAID, _('Paid')),
     (DONE, _('Done')),
   )
 
-  order_key = models.CharField(max_length=200)
+  order_key = models.CharField(max_length=200, blank=True)
   status = models.PositiveSmallIntegerField(choices=STATUS_CHOICES, blank=True, null=True, default=CREATED)
   created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="created_by")
-  total_paid = models.DecimalField(max_digits=5, decimal_places=2)
-  created = models.DateTimeField(auto_now_add=True)
-  updated = models.DateTimeField(auto_now=True)
+  total_paid = models.DecimalField(max_digits=5, decimal_places=2, blank=True, default=0.00)
+  created = models.DateTimeField(_("Created at"), default=timezone.now)
+  updated = models.DateTimeField(_("Updated at"), auto_now=True)
+
+  orders = OrderManager()
 
   class Meta:
     ordering = ("-created", )
 
   def __str__(self):
-    return str(self.order_key) + "-" + str(self.created)
+    return str(self.order_key)
 
 
 class Bill(models.Model):
@@ -98,7 +101,7 @@ class Bill(models.Model):
   product = models.ForeignKey(Product, related_name="order_item", on_delete=models.CASCADE)
   price = models.DecimalField(max_digits=5, decimal_places=2)
   quantity = models.PositiveIntegerField(default=1)
-  created = models.DateTimeField(auto_now_add=True)
+  created = models.DateTimeField(_("Created at"), auto_now_add=True)
 
   def __str__(self):
     return str(self.id)

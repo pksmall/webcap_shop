@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, re_path
 
 from .views import (
     ProductCreateView,
@@ -8,7 +8,8 @@ from .views import (
     OrderListView,
     OrderUpdateView,
     OrderCloseView,
-    OrderGetByIdView
+    OrderGetByIdView,
+    OrderPaidView
 )
 
 urlpatterns = [
@@ -20,6 +21,9 @@ urlpatterns = [
     # orders endpoints
     path('order/create/', OrderCreateView.as_view(), name='order_create'),
     path('order/list/', OrderListView.as_view(), name='order_list'),
+    re_path(r'^order/list/([0-9]{8})/([0-9]{8})/?$', OrderListView.as_view(), name='order_list'),
+    re_path(r'^order/list/(\d+.\d+.\d+)/(\d+.\d+.\d+)/?$', OrderListView.as_view(), name='order_list'),
+    path('order/payed/', OrderPaidView.as_view(), name='order_update'),
     path('order/update/', OrderUpdateView.as_view(), name='order_update'),
     path('order/close/', OrderCloseView.as_view(), name='order_close'),
     path('order/get/<int:id>', OrderGetByIdView.as_view(), name='order_get_by_id'),

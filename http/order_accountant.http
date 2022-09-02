@@ -3,7 +3,7 @@ POST http://localhost:8000/user/auth/login
 Content-Type: application/json
 
 {
-  "email": "cca@aa.cc",
+  "email": "bbc@aa.cc",
   "password": "password123"
 }
 
@@ -12,39 +12,6 @@ Content-Type: application/json
   client.global.set("refresh_token", response.body.refresh);
 %}
 
-### Order Create
-#Success, Status: 201
-#{
-#  "success": true,
-#  "statusCode": 201,
-#  "message": "Order and Bill successfully created!",
-#  "order": {
-#    "id": 24,
-#    "order_key": "20220902160400-8",
-#    "total_paid": "11.11",
-#    "created_by": 9,
-#    "status": 1,
-#    "created": "2022-09-02T16:12:00.176713Z"
-#  },
-#  "bill": {
-#    "order": 24,
-#    "product": "product #2",
-#    "price": "11.11",
-#    "quantity": 1,
-#    "is_discount": false,
-#    "discount_price": 0.0,
-#    "created": "2022-09-02T16:12:00.179201Z"
-#  }
-#}
-#
-#Faild, Status: 403
-POST http://localhost:8000/store/order/create/
-Authorization: JWT {{access_token}}
-Content-Type: application/json
-
-{
-  "product_id": 8
-}
 
 ### Get List of Order with Bill
 #Success, Status: 200
@@ -85,13 +52,3 @@ Content-Type: application/json
 GET http://localhost:8000/store/order/list/01.07.2022/01.09.2022/
 Authorization: JWT {{access_token}}
 Content-Type: application/json
-
-
-### Order Set Paid Status
-POST http://localhost:8000/store/order/payed/
-Authorization: JWT {{access_token}}
-Content-Type: application/json
-
-{
-  "order_id": 23
-}

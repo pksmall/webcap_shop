@@ -5,7 +5,7 @@ from .models import Product, Order, Bill
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-  list_display = ('title', 'regular_price', 'slug', 'is_active', 'who_created')
+  list_display = ('title', 'regular_price', 'is_active', 'who_created', 'created_at')
   list_filter = ('slug', 'is_active')
 
 
