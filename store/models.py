@@ -1,6 +1,5 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from django.urls import reverse
 
 from store.manager import ProductManager
 from webcap_shop import settings
@@ -9,7 +8,7 @@ from users.models import User
 
 class Product(models.Model):
   """
-  The Product model
+  Product model
   """
 
   title = models.CharField(verbose_name=_("title"), help_text=_("Required"),  max_length=255)
@@ -50,7 +49,7 @@ class Product(models.Model):
 
   REQUIRED_FIELDS = []
 
-  objects = ProductManager()
+  products = ProductManager()
 
   class Meta:
     ordering = ("-created_at",)
@@ -59,3 +58,47 @@ class Product(models.Model):
 
   def __str__(self):
     return self.title
+
+
+class Order(models.Model):
+  """
+  Orders model
+  """
+  CREATED = 1
+  PROCESSING = 2
+  PAYED = 3
+  DONE = 4
+
+  STATUS_CHOICES = (
+    (CREATED, _('Created')),
+    (PROCESSING, _('Processing')),
+    (PAYED, _('Payed')),
+    (DONE, _('Done')),
+  )
+
+  order_key = models.CharField(max_length=200)
+  status = models.PositiveSmallIntegerField(choices=STATUS_CHOICES, blank=True, null=True, default=CREATED)
+  created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="created_by")
+  total_paid = models.DecimalField(max_digits=5, decimal_places=2)
+  created = models.DateTimeField(auto_now_add=True)
+  updated = models.DateTimeField(auto_now=True)
+
+  class Meta:
+    ordering = ("-created", )
+
+  def __str__(self):
+    return str(self.order_key) + "-" + str(self.created)
+
+
+class Bill(models.Model):
+  """
+  Bills model
+  """
+  order = models.ForeignKey(Order, related_name="items", on_delete=models.CASCADE)
+  product = models.ForeignKey(Product, related_name="order_item", on_delete=models.CASCADE)
+  price = models.DecimalField(max_digits=5, decimal_places=2)
+  quantity = models.PositiveIntegerField(default=1)
+  created = models.DateTimeField(auto_now_add=True)
+
+  def __str__(self):
+    return str(self.id)

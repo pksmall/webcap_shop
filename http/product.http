@@ -33,8 +33,9 @@ Authorization: JWT {{access_token}}
 Content-Type: application/json
 
 {
-  "title": "product #2",
-  "regular_price": 11.11
+  "title": "product #6",
+  "regular_price": 1.14,
+  "is_active": false
 }
 
 ### Get List of Product

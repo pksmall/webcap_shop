@@ -6,10 +6,13 @@ class ProductManager(models.Manager):
   Product Manager
   """
 
+  def get_all(self):
+    return super(ProductManager, self).get_queryset().all()
+
   def get_queryset(self):
     return super(ProductManager, self).get_queryset().filter(is_active=True)
 
-  def create(self,  title, regular_price, who_created, **extra_fields):
+  def create(self, title, regular_price, who_created, **extra_fields):
     product = self.model(title=title, regular_price=regular_price, who_created=who_created, **extra_fields)
     product.save()
     return product
