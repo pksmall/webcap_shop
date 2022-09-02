@@ -64,3 +64,27 @@ docker-compose up -d
 docker-compose exec backend python manage.py loaddata data_dump.json
 ```
 
+
+# Endpoins
+
+Детальнее в директории `http` лежат файлы используемы для тестов и в разработке с помошью `pycharm`.
+Для запуска из командной строки можно использовать программу `httpie`.
+
+## /user/auth
+- register - регистрациия 
+- login - логин
+- users - список
+
+## /store
+- product/create/ - создания продукта
+- product/list/ - список продуктов
+- product/get/<id> - получить продукт по его id
+
+- order/create/ - создания оредера и счета 
+- order/list/ - список ордеров и их счетов
+- order/list/<yyymmdd>/<yyymmdd>/ - список ордеров по дате формат yyyymmdd
+- order/list/<dd.mm.yyyy>/<dd.mm.yyyy>/ - список ордеров по дате формат dd.mm.yyyy
+- order/paid/ - поставить статус paid оредеру
+- order/update/ - поставить статус processing ордеру
+- order/close/ - поставить статус done ордеру
+- order/get/<id> - получить ордер по его id
