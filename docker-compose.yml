@@ -41,5 +41,6 @@ services:
     command: bash -c "celery -A webcap_shop worker -l INFO -B"
     restart: always
     env_file: .env
+    ports: []
     depends_on:
       - backend

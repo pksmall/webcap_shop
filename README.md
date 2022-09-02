@@ -13,8 +13,9 @@ virtualenv -m python3 venv
 . ./venv/bin/activate
 ```
 
-Скопируйте `webcap_shop/local-exeample.py` в `webcap_shop/local.py`.
-Соменяйти настройки на нужные вам.
+Скопируйте `.env.example` в `.env`. Отредактируйте на нужные вам параметры
+
+Скопируйте `webcap_shop/local-exeample.py` в `webcap_shop/local.py`. Отредактируете с соотвествии вашему `.env` файлу.
 
 Создайте базу даных, если выбрали `postgres`:
 ```bash
